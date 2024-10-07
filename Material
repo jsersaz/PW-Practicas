@@ -1,1 +1,54 @@
+package ejercicio1;
 
+public class Material {
+	private int identificador;
+	private Tipo tipo;
+	private boolean uso_exterior;
+	private Estado estado;
+	
+	//Constuctor vacío:
+	public Material() 
+	{
+		this.identificador = 0;
+		this.tipo = pelotas;
+		this.uso_exterior = true;
+		this.estado = disponible;
+	}
+	
+	//Constructor parametrizado:
+	public Material(int identificador, Tipo tipo, boolean uso_exterior, Estado estado) {
+		this.identificador = identificador;
+		this.tipo = tipo;
+		this.uso_exterior = uso_exterior;
+		this.estado = estado;
+	}
+	
+	//Getters:
+	public int getIdentificador() {
+		return identificador;
+	}
+	public Tipo getTipo() {
+		return tipo;
+	}
+	public boolean isUso() {
+		return uso_exterior;
+	}
+	public Estado getEstado() {
+		return estado;
+	}
+	
+	//Setters:
+	public void setIdentificador(int identificador) {
+		this.identificador = identificador;
+	}
+	public void setTipo(Tipo tipo) {
+		this.tipo = tipo;
+	}
+	public void setUso(boolean uso_exterior) {
+		this.uso_exterior = uso_exterior;
+	}
+	public void setEstado(Estado estado) {
+		this.estado = estado;
+	}
+	
+}
