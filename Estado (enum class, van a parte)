@@ -3,5 +3,6 @@ package ejercicio1;
 public enum Estado {
 	disponible,
 	reservado,
-	mal_estado
+	mal_estado,
+	none
 }
