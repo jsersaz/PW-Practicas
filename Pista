@@ -1,5 +1,4 @@
-package Ejercicio1;
-
+package Practica1;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,11 +20,12 @@ public class Pista {
 	//Constructor vacío
 	public Pista() {
 	    this.nombre = "";
-	    this.estado = true;
+	    this.estado = false;
 	    this.tipoInterior = false;
 	    this.tamano = tamanopista.none; 
 	    this.maxJugadores = 0;
-	    this.materialAsociados.clear();
+	    this.materialAsociados = new ArrayList<Material>();
+	    }
 	
 	//  Constructor parametrizado
     public Pista(String nombre, boolean estado, boolean tipoInterior, tamanopista tamano, int maxJugadores) {
@@ -34,7 +34,7 @@ public class Pista {
         this.tipoInterior = tipoInterior;
         this.tamano = tamano;
         this.maxJugadores = maxJugadores;
-        this.materialAsociados = new ArrayList<>(); // 
+        this.materialAsociados = new ArrayList<>();
     }
 
     
@@ -136,11 +136,11 @@ public class Pista {
 				cPelotas++;
 				
 				break;
-			case canastas:
+			case Tipo.canastas:
 				cCanastas++;
 				
 				break;
-			case conos:
+			case Tipo.conos:
 				cConos++;
 				
 				break;
