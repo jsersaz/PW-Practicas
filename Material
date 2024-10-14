@@ -10,9 +10,9 @@ public class Material {
 	public Material() 
 	{
 		this.identificador = 0;
-		this.tipo = pelotas;
+		this.tipo = Tipo.none;
 		this.uso_exterior = true;
-		this.estado = disponible;
+		this.estado = Estado.none;
 	}
 	
 	//Constructor parametrizado:
