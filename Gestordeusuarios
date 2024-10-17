@@ -1,0 +1,181 @@
+package ejercicio3;
+
+import java.io.BufferedReader;
+
+import java.io.BufferedWriter;
+import java.io.FileInputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Properties;
+import java.util.Scanner;
+import java.time.LocalDate;
+import java.time.Period;
+
+import ejercicio1.Jugador;
+
+public class Gestordeusuarios
+{
+	private ArrayList<Jugador> jugadores;
+	
+	private static Properties properties;
+	
+	private static Gestordeusuarios players;
+	
+	private Gestordeusuarios()
+	{
+		jugadores = new ArrayList<Jugador>();
+		properties=new Properties();
+		try(FileInputStream input= new FileInputStream("properties.txt"))
+		{
+			properties.load(input);
+		}catch (IOException e){
+			e.printStackTrace();
+		}
+	}
+	
+	public static Gestordeusuarios obtenerUsuarios()
+	{
+		if(players == null)
+		{
+			players = new Gestordeusuarios();
+		}
+		return players;
+	}
+	public void cargarFichero(String nombreFichero) {
+	    try (BufferedReader br = new BufferedReader(new FileReader(nombreFichero))) {
+	        String linea;
+	        while ((linea = br.readLine()) != null) {
+	            String[] campos = linea.split(";");
+
+	            if (campos.length >= 5) {
+	                try {
+	                    Jugador player = new Jugador();
+	                    player.setNombre(campos[0]);
+	                    player.setApellidos(campos[1]);
+	                    player.setFechaNacimiento(LocalDate.parse(campos[2]));
+	                    player.setFechaInscripcion(LocalDate.parse(campos[3]));
+	                    player.setEmail(campos[4]);
+	                    this.jugadores.add(player);
+	                } catch (NumberFormatException e) {
+	                    System.out.println("Ha ocurrido un error en la línea: " + linea);
+	                }
+	            }
+	        }
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+	}
+	
+	
+	
+	public void backupFichero(String nombreFichero)
+	{
+		try (BufferedWriter bw = new BufferedWriter(new FileWriter(nombreFichero))) {
+            
+            for(Jugador p : this.jugadores)
+            {
+            	bw.write(p.getNombre());
+            	bw.write(";");
+            	bw.write(p.getApellidos());
+            	bw.write(";");
+            	String fechanacimiento=p.getFechaNacimiento().toString();
+            	bw.write(fechanacimiento);
+            	bw.write(";");
+            	String fechainscripcion= p.getFechaInscripcion().toString();
+            	//new LocalDate(p.getFechaInscripcion()).toString();
+            	bw.write(fechainscripcion);
+            	bw.write(";");
+            	bw.write(p.getEmail());
+            	bw.newLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+	}
+	//Dar de alta a un usuario
+	public boolean addJugador(Jugador p)
+	{
+		//Comprobar que no está registrado previamente
+		for(Jugador q : this.jugadores)
+        {
+            if(q.getNombre()==p.getNombre() && q.getApellidos()==p.getApellidos()) 
+            {
+            	return false;
+            }
+        }
+		this.jugadores.add(p);
+		return true;
+		
+	}
+	
+	//Modificar la información de un usuario
+		public void modificarJugador()
+		{
+			Scanner scanner = new Scanner(System.in);
+			System.out.println("Introduce el email del jugador que quieres modificar");
+		    String emailBuscar = scanner.nextLine();
+		    
+		    Jugador jugadorModificar = null;
+		    for (Jugador a : this.jugadores)
+		    {
+		    	//a.getEmail().equalsIgnoreCase(emailBuscar)
+		        if (a.getEmail()==emailBuscar)
+		        {
+		            jugadorModificar = a;
+		        }
+		    }
+		    
+			System.out.println("¿Qué parte quieres modificar?: ");
+			System.out.println("1) Nombre");
+			System.out.println("2) Apellidos");
+			System.out.println("3) Fecha de nacimiento");
+			System.out.println("4) Fecha de inscripción");
+			System.out.println("5) email");
+			int opcion = scanner.nextInt();
+		    //scanner.nextLine();
+		    
+		    if(opcion==1) 
+		    {
+		    	System.out.println("Introduce el nuevo nombre:");
+		    	String nuevonombre=scanner.nextLine();
+		    	jugadorModificar.setNombre(nuevonombre);
+		    }else if(opcion==2)
+		    {
+		    	System.out.println("Introduce los nuevos apellidos:");
+		    	String nuevosApellidos=scanner.nextLine();
+		    	jugadorModificar.setApellidos(nuevosApellidos);
+		    }else if(opcion==3)
+		    {
+		    	System.out.println("Introduce la nueva fecha de nacimiento en formato YYYY-MM-DD):");
+		    	String nuevaFechaNacimiento = scanner.nextLine();
+		    	LocalDate nuevaFechaNacimientoDate = LocalDate.parse(nuevaFechaNacimiento);
+		    	jugadorModificar.setFechaNacimiento(nuevaFechaNacimientoDate);
+		    }else if(opcion==4)
+		    {
+		    	System.out.println("Introduce la nueva fecha de inscripción (formato YYYY-MM-DD):");
+		    	String nuevaFechaInscripcion = scanner.nextLine();
+		    	LocalDate nuevaFechaInscripcionDate = LocalDate.parse(nuevaFechaInscripcion);
+		    	jugadorModificar.setFechaInscripcion(nuevaFechaInscripcionDate);
+		    }else if(opcion==5)
+		    {
+		    	System.out.println("Introduce el nuevo email:");
+		    	String nuevoEmail = scanner.nextLine();
+		    	jugadorModificar.setEmail(nuevoEmail);
+		    }else {
+		    	System.out.println("Opción no válida.");
+		    }
+		}
+	
+	//Listar a los usuarios actualmente registrados
+	public void print()
+	{
+		//Con el this.jugadores.size() listamos también el tamaño
+		for(Jugador player : this.jugadores)
+		{
+			System.out.println(player.toString());
+		}
+	}
+}
+
