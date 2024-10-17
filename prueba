@@ -1,0 +1,17 @@
+package ejercicio3;
+
+import ejercicio1.Jugador;
+import ejercicio3.Gestordeusuarios;
+import java.time.LocalDate;
+
+public class prueba {
+	public static void main(String[]args) {
+		Gestordeusuarios gestordeusuarios= Gestordeusuarios.obtenerUsuarios();
+		gestordeusuarios.cargarFichero("jugadores.txt");
+		LocalDate fech = LocalDate.of(2024, 10, 10);
+		Jugador j1 = new Jugador("Juan", "Lopez Lopez", fech, "aaa");
+		gestordeusuarios.addJugador(j1);
+		gestordeusuarios.print();
+		gestordeusuarios.backupFichero("jugadores.txt");
+	}
+}
