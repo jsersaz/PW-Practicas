@@ -1,8 +1,28 @@
-package ejercicio1;
+package Ejercicio1;
 
+/**
+ * Enumeración Tipo.
+ * Representa los diferentes tipos de materiales que pueden ser utilizados en una pista deportiva.
+ */
 public enum Tipo {
-	pelotas, 
-	canastas,
-	conos,
-	none
+    
+    /**
+     * Representa el tipo de material 'pelotas'.
+     */
+    pelotas,
+    
+    /**
+     * Representa el tipo de material 'canastas'.
+     */
+    canastas,
+    
+    /**
+     * Representa el tipo de material 'conos'.
+     */
+    conos,
+    
+    /**
+     * Valor por defecto cuando no se ha asignado ningún tipo de material.
+     */
+    none 
 }
