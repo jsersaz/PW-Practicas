@@ -1,8 +1,14 @@
-package Practica1;
+package Ejercicio1;
 
 import java.util.List;
 
-public class MainPista {
+/**
+ * Clase mainpista.
+ * Clase principal para realizar pruebas sobre la funcionalidad de la clase Pista y sus interacciones
+ * con los materiales asociados.
+ */
+public class mainpista {
+
     public static void main(String[] args) {
         
         // 1. Prueba del constructor vacío de Pista
