@@ -1,6 +1,12 @@
-package ejercicio1;
 
-public class MainMaterial {
+package Ejercicio1;
+
+/**
+ * Clase MainMaterial.
+ * Clase principal para realizar pruebas sobre la funcionalidad de la clase Material,
+ * incluyendo la creación de objetos y la utilización de sus métodos.
+ */
+public class mainmaterial {
     public static void main(String[] args) {
         // 1. Prueba del constructor vacío
         Material material1 = new Material();
@@ -30,7 +36,11 @@ public class MainMaterial {
         
     }
     
-    // Método auxiliar para mostrar los detalles de un objeto Material
+    /**
+     * Método auxiliar para mostrar los detalles de un objeto Material.
+     *
+     * @param material El objeto Material cuyas propiedades se mostrarán.
+     */
     private static void mostrarMaterial(Material material) {
         System.out.println("Identificador: " + material.getIdentificador());
         System.out.println("Tipo: " + material.getTipo());
@@ -38,3 +48,4 @@ public class MainMaterial {
         System.out.println("Estado: " + material.getEstado());
     }
 }
+
