@@ -43,14 +43,14 @@ public class Gestordeusuarios
 		}
 		return players;
 	}
-	public void cargarFichero(String nombreFichero) {
-	    try (BufferedReader br = new BufferedReader(new FileReader(nombreFichero))) {
+	public void cargarFichero() {
+	    try (BufferedReader br = new BufferedReader(new FileReader(properties.getProperty("ficheroJugadores")))) {
 	        String linea;
 	        while ((linea = br.readLine()) != null) {
 	            String[] campos = linea.split(";");
 
 	            if (campos.length >= 5) {
-	                try {
+	                try{
 	                    Jugador player = new Jugador();
 	                    player.setNombre(campos[0]);
 	                    player.setApellidos(campos[1]);
@@ -58,7 +58,7 @@ public class Gestordeusuarios
 	                    player.setFechaInscripcion(LocalDate.parse(campos[3]));
 	                    player.setEmail(campos[4]);
 	                    this.jugadores.add(player);
-	                } catch (NumberFormatException e) {
+	                }catch (NumberFormatException e) {
 	                    System.out.println("Ha ocurrido un error en la línea: " + linea);
 	                }
 	            }
@@ -70,9 +70,9 @@ public class Gestordeusuarios
 	
 	
 	
-	public void backupFichero(String nombreFichero)
+	public void backupFichero()
 	{
-		try (BufferedWriter bw = new BufferedWriter(new FileWriter(nombreFichero))) {
+		try (BufferedWriter bw = new BufferedWriter(new FileWriter(properties.getProperty("ficheroJugadores")))) {
             
             for(Jugador p : this.jugadores)
             {
@@ -111,61 +111,29 @@ public class Gestordeusuarios
 	}
 	
 	//Modificar la información de un usuario
-		public void modificarJugador()
+		public boolean modificarJugador(String nombrenuevo, String apellidosnuevos, LocalDate nuevaFechaNacimientoDate, String nuevoEmail, String emailBuscar)
 		{
-			Scanner scanner = new Scanner(System.in);
-			System.out.println("Introduce el email del jugador que quieres modificar");
-		    String emailBuscar = scanner.nextLine();
-		    
-		    Jugador jugadorModificar = null;
+			System.out.println("emailBuscar");
+			System.out.println(emailBuscar);
+		    //Jugador jugadorModificar = null;
 		    for (Jugador a : this.jugadores)
 		    {
 		    	//a.getEmail().equalsIgnoreCase(emailBuscar)
-		        if (a.getEmail()==emailBuscar)
+		        if (a.getEmail().equals(emailBuscar))
 		        {
-		            jugadorModificar = a;
+		            //jugadorModificar = a;
+		            
+		            a.setNombre(nombrenuevo);
+		    		
+			    	a.setApellidos(apellidosnuevos);
+			    
+			    	a.setFechaNacimiento(nuevaFechaNacimientoDate);
+	 
+			    	a.setEmail(nuevoEmail);
+			    	return true;
 		        }
 		    }
-		    
-			System.out.println("¿Qué parte quieres modificar?: ");
-			System.out.println("1) Nombre");
-			System.out.println("2) Apellidos");
-			System.out.println("3) Fecha de nacimiento");
-			System.out.println("4) Fecha de inscripción");
-			System.out.println("5) email");
-			int opcion = scanner.nextInt();
-		    //scanner.nextLine();
-		    
-		    if(opcion==1) 
-		    {
-		    	System.out.println("Introduce el nuevo nombre:");
-		    	String nuevonombre=scanner.nextLine();
-		    	jugadorModificar.setNombre(nuevonombre);
-		    }else if(opcion==2)
-		    {
-		    	System.out.println("Introduce los nuevos apellidos:");
-		    	String nuevosApellidos=scanner.nextLine();
-		    	jugadorModificar.setApellidos(nuevosApellidos);
-		    }else if(opcion==3)
-		    {
-		    	System.out.println("Introduce la nueva fecha de nacimiento en formato YYYY-MM-DD):");
-		    	String nuevaFechaNacimiento = scanner.nextLine();
-		    	LocalDate nuevaFechaNacimientoDate = LocalDate.parse(nuevaFechaNacimiento);
-		    	jugadorModificar.setFechaNacimiento(nuevaFechaNacimientoDate);
-		    }else if(opcion==4)
-		    {
-		    	System.out.println("Introduce la nueva fecha de inscripción (formato YYYY-MM-DD):");
-		    	String nuevaFechaInscripcion = scanner.nextLine();
-		    	LocalDate nuevaFechaInscripcionDate = LocalDate.parse(nuevaFechaInscripcion);
-		    	jugadorModificar.setFechaInscripcion(nuevaFechaInscripcionDate);
-		    }else if(opcion==5)
-		    {
-		    	System.out.println("Introduce el nuevo email:");
-		    	String nuevoEmail = scanner.nextLine();
-		    	jugadorModificar.setEmail(nuevoEmail);
-		    }else {
-		    	System.out.println("Opción no válida.");
-		    }
+		    return false;   
 		}
 	
 	//Listar a los usuarios actualmente registrados
