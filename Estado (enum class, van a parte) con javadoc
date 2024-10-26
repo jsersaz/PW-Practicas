@@ -1,28 +1,29 @@
-package Ejercicio1;
+package es.uco.pw.clases.material;
 
 /**
- * Enumeración Tipo.
- * Representa los diferentes tipos de materiales que pueden ser utilizados en una pista deportiva.
+ * Enumeración Estado.
+ * Representa los posibles estados de un objeto dentro del sistema.
+ * Puede ser utilizado, por ejemplo, para representar el estado de una reserva, un recurso, o una instalación.
  */
-public enum Tipo {
+public enum Estado {
     
     /**
-     * Representa el tipo de material 'pelotas'.
+     * Indica que el objeto está disponible.
      */
-    pelotas,
+    disponible,
     
     /**
-     * Representa el tipo de material 'canastas'.
+     * Indica que el objeto está reservado.
      */
-    canastas,
+    reservado,
     
     /**
-     * Representa el tipo de material 'conos'.
+     * Indica que el objeto está en mal estado.
      */
-    conos,
+    mal_estado,
     
     /**
-     * Valor por defecto cuando no se ha asignado ningún tipo de material.
+     * Indica que el objeto no tiene un estado definido.
      */
-    none 
+    none
 }
