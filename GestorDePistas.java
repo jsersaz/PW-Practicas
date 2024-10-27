@@ -1,78 +1,294 @@
 package ejercicio3;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileInputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Properties;
+
+import Ejercicio1.Estado;
+import Ejercicio1.Material;
+import Ejercicio1.Pista;
+import Ejercicio1.Tipo;
+import Ejercicio1.tamanopista;
+
 
 public class GestorDePistas {
-    private ArrayList<ejercicio1.Pista> pistas; // Creamos una lista de pistas
-    private ArrayList<ejercicio1.Material> materiales; // Creamos una lista de materiales
-
-    // Constructor vacío (sin parametros)
-    public GestorDePistas() {
-        this.pistas = new ArrayList<>();
-        this.materiales = new ArrayList<>();
-    }
-
-    // Punto1 -> Función para crear una pista
-    public void crearPista(String nombre, boolean tipoInterior, ejercicio1.tamanopista tamano, int maxJugadores) {
-    	ejercicio1.Pista nuevaPista = new ejercicio1.Pista(nombre, true, tipoInterior, tamano, maxJugadores);
-        pistas.add(nuevaPista);
-    }
-
-    // Punto 1-> Función para crear un material
-    public void crearMaterial(int id, ejercicio1.Tipo tipo, boolean usoExterior, ejercicio1.Estado estado) {
-    	ejercicio1.Material nuevoMaterial = new ejercicio1.Material(id, tipo, usoExterior, estado);
-        materiales.add(nuevoMaterial);
-    }
-
-    // Punto 2-> Asocia un material a una pista disponible
-    public boolean asociarMaterialAPista(String nombrePista, ejercicio1.Material material) {
-        for (ejercicio1.Pista pista : pistas) {
-            if (pista.getNombre().equals(nombrePista) && pista.isEstado()) { // Si la pista está disponible
-                if (material.getEstado() == ejercicio1.Estado.disponible) { // Si el material está disponible
-                	// Comprobamos si el material ya está asignado a otra pista
-                    for (ejercicio1.Pista p : pistas) { 
-                        if (p.getMaterialAsociados().contains(material)) {
-                            System.out.println("El material no está disponible.");
-                            return false;
-                        }
-                    }
-                    System.out.println("Material asociado a la " + nombrePista + " con éxito.");
-                    return pista.asociarMaterial_Pista(material);
-                } else {
-                    System.out.println("El material está en mantenimiento.");
+	
+	private ArrayList<Pista> pistas;
+	
+	private static GestorDePistas instanciaUnica;
+	
+	private static Properties properties;
+	
+	private GestorDePistas()
+	{
+		pistas= new ArrayList<Pista>();
+		properties= new Properties();
+        try(FileInputStream input=new FileInputStream("properties.txt"))
+        {
+            properties.load(input);
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+	}
+	
+	public static GestorDePistas getInstance()
+	{
+		if(instanciaUnica == null)
+		{
+			instanciaUnica = new GestorDePistas();
+		}
+		return instanciaUnica;
+	}
+	
+	public boolean nombrePistaExiste(String nombrePista)
+	{
+        try (BufferedReader br = new BufferedReader(new FileReader(properties.getProperty("ficheroPistas"))))
+        {
+            String linea;
+            while((linea = br.readLine()) != null)
+            {
+                String[] campos = linea.split(";");
+                
+                if (campos[0].equalsIgnoreCase(nombrePista.trim()))
+                {
+                    return true;
                 }
             }
         }
-        System.out.println("La " + nombrePista + " no está disponible.");
-        return false;
-    }
-
-    // Punto 3-> Función que lista las pistas no disponibles
-    public void listarPistasNoDisponibles() {
-    	int cont = 0;
-        for (ejercicio1.Pista pista : pistas) {
-        	if (!pista.isEstado())  {
-                System.out.println("La " + pista.getNombre() + " no está disponible.");
-                cont ++;
-            }
-        }
-        if (cont == 0)
+        catch (IOException e)
         {
-        	System.out.println("Todas las pistas están disponibles");
+            e.printStackTrace();
         }
+        return false; 
     }
+	
+	public boolean addPista(Pista pistaNueva)
+	{
+		if(nombrePistaExiste(pistaNueva.getNombre()))
+		{
+            System.out.println("Error: Ya existe una pista con el nombre " + pistaNueva.getNombre());
+            return false;
+        }
+		
+//		for(Material material : pistaNueva.getMaterialAsociados())
+//		{
+//	        if(material.isAsociado())
+//	        {
+//	            System.out.println("Error: El material ID " + material.getIdentificador() + " ya está asociado a otra pista.");
+//	            return false;
+//	        }
+//	    }
+		
+		for(Material material : pistaNueva.getMaterialAsociados())
+		{
+	        material.setPistaAsociada(pistaNueva);
+	    }
+		
+		for(Pista pista : this.pistas)
+		{
+			if(pista.getNombre() == pistaNueva.getNombre())
+			{
+	            System.out.println("Error: El nombre " + pistaNueva.getNombre() + " ya está en otra pista.");
+				return false;
+			}
+		}
+		
+		this.pistas.add(pistaNueva);
+		guardarPistasEnBD();
+		return true;
+	}
+	
+	private ArrayList<Material> cargarMaterialesBD()
+	{
+		ArrayList<Material> materiales = new ArrayList<>();
+		
+		try (BufferedReader br = new BufferedReader(new FileReader(properties.getProperty("ficheroMateriales"))))
+		{
+	        String linea;
+	        while ((linea = br.readLine()) != null)
+	        {
+	            String[] campos = linea.split(";");
+	            
+	            Material materialLeido = new Material();
+	            
+	            materialLeido.setIdentificador(Integer.parseInt(campos[0]));
+	            Tipo tipo = Tipo.valueOf(campos[1]);
+	            materialLeido.setTipo(tipo);
+	            materialLeido.setUso(campos[2].equalsIgnoreCase("true"));
+	            Estado estado = Estado.valueOf(campos[3]);
+	            
+	            materiales.add(materialLeido);
+	            
+	        }
+		}
+		catch (IOException e)
+		{
+	        e.printStackTrace();
+	    }
+		
+		return materiales;
+	}
+	
+	public void cargarBD()
+	{
+		//Primero cargo todos los materiales del fichero materiales en un array de materiales
+		ArrayList<Material> materiales = cargarMaterialesBD();
+		
+		try (BufferedReader br = new BufferedReader(new FileReader(properties.getProperty("ficheroPistas"))))
+		{
+	        String linea;
+	        while ((linea = br.readLine()) != null)
+	        {
+	            String[] campos = linea.split(";");
+	            Pista pistaLeida = new Pista();
+	            
+	            pistaLeida.setNombre(campos[0]);
+	            pistaLeida.setEstado(campos[1].equalsIgnoreCase("disponible"));
+	            pistaLeida.setTipoInterior(campos[2].equalsIgnoreCase("true"));
+	            tamanopista tamano = tamanopista.valueOf(campos[3]);
+	            pistaLeida.setTamano(tamano);
+	            pistaLeida.setMaxJugadores(Integer.parseInt(campos[4]));
+	            
+	            //Ahora proceso los materiales
+	            String [] materialesLeidos = campos[5].split(",");
+	            
+	            for(int i = 0; i < materialesLeidos.length; i++)
+	            {
+		            for(Material m : materiales)
+		            {
+		            	if(m.getIdentificador() == Integer.parseInt(materialesLeidos[i]))
+		            	{
+		            		pistaLeida.asociarMaterial_Pista(m);
+		            	}
+		            }
+	            }
+	            //Guardo la nueva pista en el array
+	            this.pistas.add(pistaLeida);
+	            
+	        }
+		}
+		catch (IOException e)
+		{
+	        e.printStackTrace();
+	    }
+	}
 
-
-    // Función que devuelve las pistas libres que soporten minimo X jugadores
-    public List<ejercicio1.Pista> encontrarPistasLibres(int nJugadores, boolean tipoInterior) {
-    	System.out.println("Pistas libres que soportan al menos " + nJugadores + " jugadores:");
-        List<ejercicio1.Pista> pistasLibres = new ArrayList<>();
-        for (ejercicio1.Pista pista : pistas) {
-            if ((pista.isEstado()) && (pista.getMaxJugadores() >= nJugadores) && (pista.isTipoInterior() == tipoInterior)) {
-                pistasLibres.add(pista);
+	
+	private void guardarPistasEnBD()
+	{
+        try(BufferedWriter bw = new BufferedWriter(new FileWriter(properties.getProperty("ficheroPistas"))))
+        {
+            for(Pista pista : this.pistas)
+            {
+            	bw.write(pista.getNombre());
+                bw.write(";");
+                bw.write(pista.isEstado() ? "disponible" : "no disponible");
+                bw.write(";");
+                bw.write(pista.isTipoInterior() ? "true" : "false");
+                bw.write(";");
+                bw.write(pista.getTamano().name());
+                bw.write(";");
+                bw.write(String.valueOf(pista.getMaxJugadores()));
+                bw.write(";");
+                ArrayList<Material> material = pista.getMaterialAsociados();
+                for(int i = 0; i < material.size(); i++)
+                {
+                    bw.write(String.valueOf(material.get(i).getIdentificador()));
+                    if(i < (material.size() - 1))
+                    {
+                        bw.write(",");
+                    }
+                }
+                bw.newLine();
             }
         }
-        return pistasLibres;
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
     }
+	
+	public void listarMateriales()
+	{
+	    ArrayList<Material> materiales = cargarMaterialesBD();
+	    
+	    if (materiales.isEmpty())
+	    {
+	        System.out.println("No hay materiales en el archivo.");
+	    }
+	    else
+	    {
+	        System.out.println("Materiales:");
+	        for (Material material : materiales)
+	        {
+	            System.out.println("-> ID: " + material.getIdentificador() + ", Nombre: " + material.getTipo() + ", Tipo: " + (material.isUso() ? "exterior" : "interior"));
+	        }
+	    }
+	}
+	
+	public Material buscarMaterialPorId(int id)
+	{
+	    ArrayList<Material> materiales = cargarMaterialesBD();
+	    
+	    if(materiales.isEmpty())
+	    {
+	        System.out.println("Error: No hay materiales en el archivo.");
+	    }
+	    else
+	    {
+		    for(Material material : materiales)
+		    {
+		        if(material.getIdentificador() == id)
+		        {
+		            return material;
+		        }
+		    }
+	    }
+	    return null;
+	}
+	
+	// Listar pistas no disponibles
+	public void listarPistasNoDisponibles()
+	{
+		System.out.println("Pistas no disponibles: ");
+		for(Pista pista : this.pistas)
+		{
+			if (!pista.isEstado())
+			{
+				System.out.println(pista.getNombre());
+			}
+		}
+	}
+	
+	// Encontrar pistas libres según número de jugadores y tipo
+	public void buscarPistasLibres(int numJugadores, boolean esInterior)
+	{
+	    System.out.println("Pistas libres para " + numJugadores + " jugadores y tipo " + (esInterior ? "interior" : "exterior") + ":");
+		int i=0;	    
+	    for(Pista pista : this.pistas)
+		{
+			if((pista.isEstado()) && (pista.isTipoInterior() == esInterior) && (pista.getMaxJugadores() >= numJugadores))
+			{
+				System.out.println("-> " + pista.getNombre());
+				i++;
+			}
+		}
+	    if(i==0)
+	    {
+			System.out.println("No hay pistas con esas opciones.");
+	    }
+	}
+
+	@Override
+	public String toString() {
+		return "GestorPistas [pistas=" + pistas + "]";
+	}
+
 }
