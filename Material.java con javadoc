@@ -2,7 +2,8 @@ package Ejercicio1;
 
 /**
  * La clase Material representa un recurso material con un identificador, tipo, 
- * indicación de si es para uso exterior, y su estado actual.
+ * indicación de si es para uso exterior, su estado actual y la pista asociada a
+ * ese material
  */
 public class Material {
 	
@@ -10,6 +11,7 @@ public class Material {
 	private Tipo tipo;
 	private boolean uso_exterior;
 	private Estado estado;
+	private Pista pistaAsociada;
 	
 	/**
 	 * Constructor vacío que inicializa los atributos del material con valores predeterminados.
@@ -21,6 +23,7 @@ public class Material {
 		this.tipo = Tipo.none;
 		this.uso_exterior = true;
 		this.estado = Estado.none;
+		this.pistaAsociada = null;
 	}
 	
 	/**
@@ -32,11 +35,12 @@ public class Material {
 	 * @param uso_exterior   Indica si el material está diseñado para uso en exteriores.
 	 * @param estado         El estado actual del material (definido por la enumeración Estado).
 	 */
-	public Material(int identificador, Tipo tipo, boolean uso_exterior, Estado estado) {
+	public Material(int identificador, Tipo tipo, boolean uso_exterior, Estado estado, Pista pista) {
 		this.identificador = identificador;
 		this.tipo = tipo;
 		this.uso_exterior = uso_exterior;
 		this.estado = estado;
+		this.pistaAsociada = pista;
 	}
 	
 	/**
@@ -76,6 +80,15 @@ public class Material {
 	}
 	
 	/**
+	 * Obtiene la pista actualmente asociada a este material, si existe.
+	 *
+	 * @return La pista asociada o null si no hay una asociación.
+	 */
+	public Pista getPistaAsociada() {
+        return pistaAsociada;
+    }
+	
+	/**
 	 * Establece el identificador del material.
 	 *
 	 * @param identificador El nuevo identificador del material.
@@ -110,4 +123,25 @@ public class Material {
 	public void setEstado(Estado estado) {
 		this.estado = estado;
 	}
+	
+	/**
+	 * Asocia este material a una pista específica.
+	 *
+	 * @param pista La pista con la cual se desea asociar el material.
+	 */
+	public void setPistaAsociada(Pista pista)
+	{
+        this.pistaAsociada = pista;
+    }
+	
+	/**
+	 * Verifica si el material está asociado a alguna pista.
+	 *
+	 * @return true si el material está asociado a una pista, false en caso contrario.
+	 */
+	public boolean isAsociado()
+	{
+        return (pistaAsociada != null);
+    }
+	
 }
