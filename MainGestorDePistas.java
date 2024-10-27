@@ -1,40 +1,135 @@
 package ejercicio3;
 
-import ejercicio1.Material;
-import ejercicio1.Pista;
-import ejercicio1.Estado;
-import ejercicio1.Tipo;
-import ejercicio1.tamanopista;
+import java.util.ArrayList;
+import java.util.Scanner;
 
-public class MainGestorDePistas {
-	public static void main(String[] args) {
-        GestorDePistas gestor = new GestorDePistas();
+import Ejercicio1.Material;
+import Ejercicio1.Pista;
+import Ejercicio1.tamanopista;
 
-        // Creamos algunas pistas
-        gestor.crearPista("Pista 1", true, tamanopista.minibasket, 4);
-        gestor.crearPista("Pista 2", false, tamanopista.adultos, 6);
-        gestor.crearPista("Pista 3", true, tamanopista.tres_vs_tres, 2);
+public class MainGestorDePistas
+{
 
-        // Crear algunos materiales
-        gestor.crearMaterial(1, Tipo.pelotas, true, Estado.disponible);
-        gestor.crearMaterial(2, Tipo.canastas, false, Estado.disponible);
-        gestor.crearMaterial(3, Tipo.conos, true, Estado.mal_estado);
+	public static void main(String[] args)
+	{
+		GestorDePistas gestorPistas = GestorDePistas.getInstance();
+		gestorPistas.cargarBD();
+		
+		System.out.println(gestorPistas.toString());
+		
+		Scanner scanner = new Scanner(System.in);
+		int opcion = 0;
 
-        // Intentar asociar un material disponible a una pista disponible
-        Material materialPelotas = new Material(1, Tipo.pelotas, true, Estado.disponible);
-        boolean asociado = gestor.asociarMaterialAPista("Pista 1", materialPelotas); // Material asociado con la Pista 1 con éxito
-        System.out.println("¿Se ha asociado el material a la Pista 1?: " + asociado); // TRUE
+		do
+		{
+			System.out.println("----- Menú Gestor de Pistas -----");
+			System.out.println("1) Agregar una nueva pista");
+			System.out.println("2) Listar pistas no disponibles");
+			System.out.println("3) Buscar pistas libres según número de jugadores y tipo");
+			System.out.println("4) Salir");
+			opcion = scanner.nextInt();
+			
+			if (opcion == 1)
+			{
+					agregarNuevaPista(gestorPistas, scanner);
+			}
+			else if (opcion == 2)
+			{
+					gestorPistas.listarPistasNoDisponibles();
+			}
+			else if (opcion == 3)
+			{
+					buscarLibres(gestorPistas, scanner);
+			}
+			else if (opcion == 4)
+			{
+					System.out.println("Saliendo.");
+			}
+			else
+			{
+					System.out.println("Opción no válida.");
+			}
+			
+		} while (opcion != 4);
 
-        // Intentar asociar un material en mal_estado
-        Material materialConos = new Material(3, Tipo.conos, false, Estado.mal_estado);
-        boolean asociadoConos = gestor.asociarMaterialAPista("Pista 2", materialConos); // El material está en mantenimiento
-        System.out.println("¿Se ha asociado el material a la Pista 2?: " + asociadoConos); // FALSE
+		scanner.close();
+	}
 
-        gestor.listarPistasNoDisponibles(); // La Pista 2 no está disponible
+	// Método para agregar una nueva pista
+	private static void agregarNuevaPista(GestorDePistas gestorPistas, Scanner scanner)
+	{
+		scanner.nextLine();
+		
+		System.out.print("Introduce el nombre de la pista: ");
+		String nombre = scanner.nextLine();
+		
+		System.out.print("¿Está disponible? (true/false): ");
+		boolean disponible = scanner.nextBoolean();
+		
+		System.out.print("¿Es interior? (true/false): ");
+		boolean esInterior = scanner.nextBoolean();
+		
+		System.out.print("Introduce el tamaño de pista (minibasket, adultos, tres_vs_tres, none): ");
+		tamanopista tamano = tamanopista.valueOf(scanner.next().toLowerCase());
+		
+		System.out.print("Introduce el número máximo de jugadores: ");
+		int maxJugadores = scanner.nextInt();
+		
+		gestorPistas.listarMateriales();		
+		System.out.print("Introduce el número de los materiales que quiera asociar (introduce 0 para terminar): ");
+		int OpcionMaterial;
+		ArrayList<Material> materialesSeleccionados = new ArrayList<>();
+		do
+		{
+			OpcionMaterial = scanner.nextInt();
+			if(OpcionMaterial != 0)
+			{
+				Material materialSeleccionado = gestorPistas.buscarMaterialPorId(OpcionMaterial);
+	            
+	            if(materialSeleccionado != null)
+	            {
+	                    materialesSeleccionados.add(materialSeleccionado);
+	            }
+	            else
+	            {
+	                System.out.println("Error: Material no encontrado.");
+	            }
+			}
+		} while (OpcionMaterial != 0);
+		
+		if (materialesSeleccionados.isEmpty())
+		{
+	        System.out.println("Error: No se han seleccionado materiales");
+	        System.out.println("Error: La pista no ha sido agregada.");
+	    }
+		else
+		{
+			Pista nuevaPista = new Pista(nombre, disponible, esInterior, tamano, maxJugadores);
+			for(Material material : materialesSeleccionados)
+			{
+		        nuevaPista.asociarMaterial_Pista(material);
+		    }
+			if(gestorPistas.addPista(nuevaPista))
+			{
+				System.out.println("Pista agregada exitosamente.");
+			}
+			else
+			{
+				System.out.println("Error: La pista no ha sido agregada.");
+			}	
+		}
+	}
 
-        // Buscar pistas libres que soporten al menos 4 jugadores y sean interiores (Pista 1)
-        for (Pista pista : gestor.encontrarPistasLibres(4, true)) {
-            System.out.println(pista.getNombre());
-        }
-    }
+	// Método para buscar pistas libres según el número de jugadores y si es interior/exterior
+	private static void buscarLibres(GestorDePistas gestorPistas, Scanner scanner)
+	{
+		System.out.print("Ingrese el número de jugadores: ");
+		int numJugadores = scanner.nextInt();
+		
+		System.out.print("¿Es interior? (true/false): ");
+		boolean esInterior = scanner.nextBoolean();
+		
+		gestorPistas.buscarPistasLibres(numJugadores, esInterior);
+	}
+
 }
