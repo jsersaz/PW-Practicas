@@ -147,7 +147,7 @@ public class Pista {
 	 *
 	 * @return La lista de materiales asociados.
 	 */
-	public List<Material> getMaterialAsociados() {
+	public ArrayList<Material> getMaterialAsociados() {
 		return materialAsociados;
 	}
 
@@ -166,7 +166,8 @@ public class Pista {
 	 * @return Una cadena que representa la pista y sus atributos.
 	 */
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "Pista: " + this.nombre +
         		", estado =" + (this.estado ? "Disponible" : "No disponible") +
                 ", tipoInterior =" + (this.tipoInterior ? "Interior" : "Exterior") +
@@ -180,10 +181,13 @@ public class Pista {
 	 *
 	 * @return Una lista de materiales disponibles.
 	 */
-    public List<Material> consultarMaterialesDisponibles() { 
+    public List<Material> consultarMaterialesDisponibles()
+    { 
         List<Material> materialesDisponibles = new ArrayList<>();
-        for(Material m : this.materialAsociados) {
-        	if(m.getEstado() == Estado.disponible) {
+        for(Material m : this.materialAsociados)
+        {
+        	if(m.getEstado() == Estado.disponible)
+        	{
         		materialesDisponibles.add(m);
         	}
         }
@@ -238,6 +242,7 @@ public class Pista {
 			}
 		}
 		materialAsociados.add(material);
+		material.setPistaAsociada(this);
 		return true;
 	}
 }
