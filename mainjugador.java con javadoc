@@ -1,4 +1,4 @@
-package Ejercicio1;
+package es.uco.pw.clases.jugador;
 
 import java.time.LocalDate;
 
@@ -35,7 +35,7 @@ public class mainjugador {
         System.out.println(); // Separador para mejor legibilidad
         
         // Crear una instancia de Jugador usando el constructor parametrizado
-        Jugador jugador2 = new Jugador("María", "García", LocalDate.of(1985, 8, 20), "maria.garcia@example.com");
+        Jugador jugador2 = new Jugador("María", "García", LocalDate.of(1985, 8, 20), "maria.garcia@example.com", "1");
         
         // Mostrar los datos del jugador 2 usando el método toString()
         System.out.println("Datos del jugador 2:");
