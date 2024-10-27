@@ -1,6 +1,13 @@
-package Ejercicio1;
+package es.uco.pw.clases.pista;
+
+
+import es.uco.pw.clases.material.Material;
+import es.uco.pw.clases.material.Estado;
+import es.uco.pw.clases.material.Tipo;
+
 
 import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Clase mainpista.
