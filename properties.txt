@@ -1,0 +1,5 @@
+ficheroJugadores=jugadores.txt
+ficheroMateriales=materiales.txt
+ficheroPistas=pistas.txt
+ficheroReservas=reserva.txt
+ficheroBonos=bonos.txt
