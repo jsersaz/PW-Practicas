@@ -1,0 +1,47 @@
+-- Insertar en la tabla Jugador
+INSERT INTO Jugador (DNI, nombre, apellidos, fecha_nacimiento, fecha_inscripción, email) VALUES
+('12345678A', 'Carlos', 'Pérez López', '1990-05-12', '2023-06-01', 'carlos.perez@example.com'),
+('87654321B', 'María', 'Gómez Ruiz', '1985-09-15', '2023-04-22', 'maria.gomez@example.com'),
+('23456789C', 'Luis', 'Martínez Torres', '1995-03-20', '2023-07-10', 'luis.martinez@example.com');
+
+-- Insertar en la tabla Info_Bono
+INSERT INTO Info_Bono (ID_BONO, numero_sesión, fecha_caducidad, fecha_creación) VALUES
+(1, 10, '2024-12-31', '2023-01-01'),
+(2, 5, '2024-06-30', '2023-03-15'),
+(3, 15, '2024-09-15', '2023-05-20');
+
+-- Insertar en la tabla Pista
+INSERT INTO Pista (NOMBRE_PISTA, tipo_interior, estado, tamaño, max_jugadores) VALUES
+('Pista 1', true, true, '20x40', 4),
+('Pista 2', false, true, '15x30', 6),
+('Pista 3', true, false, '25x50', 8);
+
+-- Insertar en la tabla Material
+INSERT INTO Material (ID_MATERIAL, uso_exterior, tipo, estado, pista_asociada, Nombre_pista) VALUES
+(101, true, 'Raquetas', 'Disponible', 'Pista 1', 'Pista 1'),
+(102, false, 'Balón', 'En uso', 'Pista 2', 'Pista 2'),
+(103, true, 'Red', 'Disponible', 'Pista 3', 'Pista 3');
+
+-- Insertar en la tabla Reserva
+INSERT INTO Reserva (ID_RESERVA, id_usuario, fecha, duración, id_pista, precio, descuento, Nombrepista, Id_bono, Dni) VALUES
+(1, '12345678A', '2024-01-20', 2, 'Pista 1', 50.00, 10.00, 'Pista 1', 1, '12345678A'),
+(2, '87654321B', '2024-02-15', 1, 'Pista 2', 30.00, 5.00, 'Pista 2', 2, '87654321B'),
+(3, '23456789C', '2024-03-10', 3, 'Pista 3', 70.00, 15.00, 'Pista 3', 3, '23456789C');
+
+-- Insertar en la tabla Familiar
+INSERT INTO Familiar (Id_reserva, numero_de_adultos, numero_de_niños) VALUES
+(1, 2, 3),
+(2, 4, 1),
+(3, 1, 2);
+
+-- Insertar en la tabla Adulto
+INSERT INTO Adulto (Id_reserva, numero_participantes) VALUES
+(1, 5),
+(2, 3),
+(3, 4);
+
+-- Insertar en la tabla Infantil
+INSERT INTO Infantil (Id_reserva, numero_de_niños) VALUES
+(1, 3),
+(2, 2),
+(3, 1);
