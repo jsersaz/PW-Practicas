@@ -45,3 +45,75 @@ INSERT INTO Infantil (Id_reserva, numero_de_niños) VALUES
 (1, 3),
 (2, 2),
 (3, 1);
+
+
+
+CREATE TABLE Jugador (
+    DNI VARCHAR(20) PRIMARY KEY,
+    nombre VARCHAR(50),
+    apellidos VARCHAR(50),
+    fecha_nacimiento DATE,
+    fecha_inscripción DATE,
+    email VARCHAR(100)
+);
+
+CREATE TABLE Info_Bono (
+    ID_BONO INT PRIMARY KEY,
+    numero_sesión INT,
+    fecha_caducidad DATE,
+    fecha_creación DATE
+);
+
+CREATE TABLE Pista (
+    NOMBRE_PISTA VARCHAR(50) PRIMARY KEY,
+    tipo_interior BOOLEAN,
+    estado BOOLEAN,
+    tamaño VARCHAR(20),
+    max_jugadores INT
+);
+
+CREATE TABLE Material (
+    ID_MATERIAL INT PRIMARY KEY,
+    uso_exterior BOOLEAN,
+    tipo VARCHAR(50),
+    estado VARCHAR(20),
+    pista_asociada VARCHAR(50),
+    Nombre_pista VARCHAR(50),
+    FOREIGN KEY (Nombre_pista) REFERENCES Pista(NOMBRE_PISTA)
+);
+
+CREATE TABLE Reserva (
+    ID_RESERVA INT PRIMARY KEY,
+    id_usuario VARCHAR(20),
+    fecha DATE,
+    duración INT,
+    id_pista VARCHAR(50),
+    precio DECIMAL(10, 2),
+    descuento DECIMAL(5, 2),
+    Nombrepista VARCHAR(50) NOT NULL,
+    Dni VARCHAR(20),
+    Id_bono INT,
+    FOREIGN KEY (Nombrepista) REFERENCES Pista(NOMBRE_PISTA),
+    FOREIGN KEY (Dni) REFERENCES Jugador(DNI),
+    FOREIGN KEY (Id_bono) REFERENCES Info_Bono(ID_BONO)
+);
+
+CREATE TABLE Familiar (
+    Id_reserva INT PRIMARY KEY,
+    numero_de_adultos INT,
+    numero_de_niños INT,
+    FOREIGN KEY (Id_reserva) REFERENCES Reserva(ID_BONO)
+);
+
+CREATE TABLE Adulto (
+    Id_reserva INT PRIMARY KEY,
+    numero_participantes INT,
+    FOREIGN KEY (Id_reserva) REFERENCES Reserva(ID_BONO)
+);
+
+CREATE TABLE Infantil (
+    Id_reserva INT PRIMARY KEY,
+    numero_de_niños INT,
+    FOREIGN KEY (Id_reserva) REFERENCES Reserva(ID_BONO)
+);
+
