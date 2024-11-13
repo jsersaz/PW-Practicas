@@ -1,0 +1,1 @@
+altaUsuario="INSERT INTO clientes (email,nombre,apellidos) VALUE"
