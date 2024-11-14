@@ -52,19 +52,19 @@ CREATE TABLE Familiar (
     Id_reserva INT PRIMARY KEY,
     numero_de_adultos INT,	
     numero_de_niños INT,
-    FOREIGN KEY (Id_reserva) REFERENCES Reserva(ID_BONO)
+    FOREIGN KEY (Id_reserva) REFERENCES Reserva(ID_RESERVA)
 );
 
 CREATE TABLE Adulto (
     Id_reserva INT PRIMARY KEY,
     numero_participantes INT,
-    FOREIGN KEY (Id_reserva) REFERENCES Reserva(ID_BONO)
+    FOREIGN KEY (Id_reserva) REFERENCES Reserva(ID_RESERVA)
 );
 
 CREATE TABLE Infantil (
     Id_reserva INT PRIMARY KEY,
     numero_de_niños INT,
-    FOREIGN KEY (Id_reserva) REFERENCES Reserva(ID_BONO)
+    FOREIGN KEY (Id_reserva) REFERENCES Reserva(ID_RESERVA)
 );
 
 
