@@ -1,3 +1,18 @@
+		
+CLAVE_PRINCIPAL/ Clave foráneA
+
+Jugador:(DNI, nombre, apellidos, fecha_nacimiento,fecha_inscripción,email)
+Reserva:(ID_RESERVA, id_usuario,fecha,duración,id_pista,precio,descuento, nombrepistA (notnull),dnI, id_bonO) 
+Info-Bono:(ID_BONO, numero_sesión, fecha_caducidad, fecha_creación)
+Pista:(NOMBRE_PISTA,tipo_interior (bool exterior o interior ),estado(bool, disponible o no),tamaño,max_jugadores)
+Material (ID_MATERIAL, uso_exterior(bool), tipo, estado, pista_asociada, nombre_pista)
+Familiar: ( id_reservA, numero_de_adultos,numero_de_niños)
+Adulto:  ( id_reservA,  numero_participantes)
+Infantil: (id_reservA,   numero_de_niños)
+
+
+
+
 
 
 
