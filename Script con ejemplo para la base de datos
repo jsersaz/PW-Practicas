@@ -59,8 +59,7 @@ CREATE TABLE Reserva (
     precio DECIMAL(10, 2),
     descuento DECIMAL(5, 2),
     Id_bono VARCHAR(50),
-    numero_sesion INT  
-    
+    numero_sesion INT,
     FOREIGN KEY (id_pista) REFERENCES Pista(NOMBRE_PISTA),
     FOREIGN KEY (id_usuario) REFERENCES Jugador(DNI),
     FOREIGN KEY (Id_bono) REFERENCES Info_Bono(ID_BONO)
