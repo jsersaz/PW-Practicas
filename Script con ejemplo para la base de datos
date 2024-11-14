@@ -33,7 +33,7 @@ CREATE TABLE Material (
 );
 
 CREATE TABLE Reserva (
-    ID_RESERVA INT PRIMARY KEY,
+    ID_RESERVA VARCHAR(50) PRIMARY KEY,
     id_usuario VARCHAR(20),
     fecha DATE,
     duración INT,
@@ -49,20 +49,20 @@ CREATE TABLE Reserva (
 );
 
 CREATE TABLE Familiar (
-    Id_reserva INT PRIMARY KEY,
+    Id_reserva VARCHAR(50) PRIMARY KEY,
     numero_de_adultos INT,	
     numero_de_niños INT,
     FOREIGN KEY (Id_reserva) REFERENCES Reserva(ID_RESERVA)
 );
 
 CREATE TABLE Adulto (
-    Id_reserva INT PRIMARY KEY,
+    Id_reserva VARCHAR(50) PRIMARY KEY,
     numero_participantes INT,
     FOREIGN KEY (Id_reserva) REFERENCES Reserva(ID_RESERVA)
 );
 
 CREATE TABLE Infantil (
-    Id_reserva INT PRIMARY KEY,
+    Id_reserva VARCHAR(50) PRIMARY KEY,
     numero_de_niños INT,
     FOREIGN KEY (Id_reserva) REFERENCES Reserva(ID_RESERVA)
 );
