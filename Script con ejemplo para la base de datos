@@ -1,3 +1,6 @@
+
+
+
 CREATE TABLE Jugador (
     DNI VARCHAR(20) PRIMARY KEY,
     nombre VARCHAR(50),
@@ -37,14 +40,14 @@ CREATE TABLE Reserva (
     id_usuario VARCHAR(20),
     fecha DATE,
     duración INT,
-    id_pista VARCHAR(50),
+    id_pista VARCHAR(50) NOT NULL,
     precio DECIMAL(10, 2),
     descuento DECIMAL(5, 2),
-    Nombrepista VARCHAR(50) NOT NULL,
-    Dni VARCHAR(20),
-    Id_bono INT,
-    FOREIGN KEY (Nombrepista) REFERENCES Pista(NOMBRE_PISTA),
-    FOREIGN KEY (Dni) REFERENCES Jugador(DNI),
+    Id_bono VARCHAR(50),
+    numero_sesion INT  
+    
+    FOREIGN KEY (id_pista) REFERENCES Pista(NOMBRE_PISTA),
+    FOREIGN KEY (id_usuario) REFERENCES Jugador(DNI),
     FOREIGN KEY (Id_bono) REFERENCES Info_Bono(ID_BONO)
 );
 
