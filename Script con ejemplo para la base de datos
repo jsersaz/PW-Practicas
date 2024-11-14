@@ -8,7 +8,7 @@ CREATE TABLE Jugador (
 );
 
 CREATE TABLE Info_Bono (
-    ID_BONO INT PRIMARY KEY,
+    ID_BONO varchar(50) PRIMARY KEY,
     numero_sesión INT,
     fecha_caducidad DATE,
     fecha_creación DATE
