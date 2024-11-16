@@ -29,7 +29,8 @@ CREATE TABLE Info_Bono (
     ID_BONO varchar(50) PRIMARY KEY,
     numero_sesión INT,
     fecha_caducidad DATE,
-    fecha_creación DATE
+    fecha_creación DATE,
+    tipo_pista VARCHAR(20)
 );
 
 CREATE TABLE Pista (
