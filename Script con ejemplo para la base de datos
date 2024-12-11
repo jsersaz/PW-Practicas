@@ -90,10 +90,12 @@ CREATE TABLE Infantil (
 
 
 -- Insertar en la tabla Jugador
-INSERT INTO Jugador (DNI, nombre, apellidos, fecha_nacimiento, fecha_inscripción, email) VALUES
-('12345678A', 'Carlos', 'Pérez López', '1990-05-12', '2023-06-01', 'carlos.perez@example.com'),
-('87654321B', 'María', 'Gómez Ruiz', '1985-09-15', '2023-04-22', 'maria.gomez@example.com'),
-('23456789C', 'Luis', 'Martínez Torres', '1995-03-20', '2023-07-10', 'luis.martinez@example.com');
+INSERT INTO Jugador (DNI, nombre, apellidos, fecha_nacimiento, fecha_inscripción, email, rol)
+VALUES 
+    ('12345678A', 'Luis', 'García López', '1990-05-14', '2024-12-01', 'luis.garcia@example.com', 0),
+    ('87654321B', 'María', 'Fernández Ruiz', '1985-09-21', '2023-11-15', 'maria.fernandez@example.com', 1),
+    ('11223344C', 'Carlos', 'Martínez Pérez', '2000-01-01', '2024-01-10', 'carlos.martinez@example.com', 0),
+    ('99887766D', 'Ana', 'López García', '1995-07-30', '2022-03-18', 'ana.lopez@example.com', 1);
 
 -- Insertar en la tabla Info_Bono
 INSERT INTO Info_Bono (ID_BONO, numero_sesión, fecha_caducidad, fecha_creación) VALUES
