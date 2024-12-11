@@ -1,7 +1,7 @@
 		
 CLAVE_PRINCIPAL/ Clave foráneA
 
-Jugador:(DNI, nombre, apellidos, fecha_nacimiento,fecha_inscripción,email)
+Jugador:(DNI, nombre, apellidos, fecha_nacimiento,fecha_inscripción,email,rol)
 Reserva:(ID_RESERVA, id_usuariO,fecha,duración,id_pistA,precio,descuento, id_bonO,numero_sesion) 
 Info-Bono:(ID_BONO, numero_sesión, fecha_caducidad, fecha_creación)
 Pista:(NOMBRE_PISTA,tipo_interior (bool exterior o interior ),estado(bool, disponible o no),tamaño,max_jugadores)
@@ -15,14 +15,14 @@ Infantil: (id_reservA,   numero_de_niños)
 
 
 
-
 CREATE TABLE Jugador (
     DNI VARCHAR(20) PRIMARY KEY,
     nombre VARCHAR(50),
     apellidos VARCHAR(50),
     fecha_nacimiento DATE,
     fecha_inscripción DATE,
-    email VARCHAR(100)
+    email VARCHAR(100),
+    rol INT CHECK (rol IN (0, 1))
 );
 
 CREATE TABLE Info_Bono (
